@@ -66,7 +66,7 @@ function App() {
 }
 
 async function getResult(command,args){
-  if(command==="whoami" && args===undefined){
+  if(command==="whoami" && (args===null || args===undefined || args==="") ){
     return "SABT: Super awesome browser terminal!";
   }
   else if(command==="wget" && args!==undefined){
