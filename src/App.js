@@ -59,7 +59,6 @@ function App() {
                   let loadingDiv = document.createElement("div");
                   loadingDiv.setAttribute("id","animation");
                   loadingDiv.innerHTML = "<i class=\"fas fa-spinner\"></i>"
-                  console.log(loadingDiv)
                   document.getElementById("output").appendChild(loadingDiv)
                 }
               }
@@ -75,7 +74,6 @@ function App() {
 }
 
 async function getResult(command,args){
-  console.log(args)
   if(command==="whoami" && (args===null || args===undefined || args==="" || args.length===0) ){
     return "SABT: Super awesome browser terminal!";
   }
@@ -115,7 +113,6 @@ async function getResult(command,args){
         await instance.get("https://api6.ipify.org/")
         .then(body=>{
             data = data + "ipv6: "+body.data
-            console.log(data)
         })
     })
     .catch(err=>{
