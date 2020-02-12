@@ -130,7 +130,7 @@ async function getResult(command,args){
     return "Here you got all the commands with some examples:<br><br>* help<br>* whoami<br>* wget https://wwww.example.com<br>* myip<br>* calc(1+3+4+5/3+54^(1/2))"
   }
   else{
-    return "Command not found, here are some examples:<br><br>* help<br>* whoami<br>* wget https://wwww.example.com<br>* myip<br>* calc(1+3+4+5/3+54^(1/2))";
+    return "Command not found, here are some examples:<br><br>* help<br>* whoami<br>* wget https://www.google.com<br>* myip<br>* calc(1+3+4+5/3+54^(1/2))";
   }
 }
 
