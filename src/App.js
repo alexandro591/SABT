@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import './App.css';
 
+/* eslint no-eval: 0 */
+
 const axios = require('axios');
 const https = require('https');
 
@@ -32,7 +34,7 @@ function App() {
               SABT >>
             </p>
             
-            <input placeholder="Enter a command here" className="commandInput" value={command} onChange={
+            <input placeholder="Enter a command here" className="commandInput" spellcheck="false" value={command} onChange={
               e=>{
                 setCommand(e.target.value)
               }
@@ -41,9 +43,7 @@ function App() {
                 if (e.key === 'Enter') {
                   let inactiveLine = document.createElement("div");
                   inactiveLine.setAttribute("class","inactiveLine");
-                  inactiveLine.innerHTML="\
-                    <p>SABT >>\
-                    <spam class=\"commandInputText\">"+command+"</spam></p>";
+                  inactiveLine.innerHTML="<p>SABT >> <spam class=\"commandInputText\">"+command+"</spam></p>";
                   let commands = command.split(" ")
                   getResult(commands[0],commands.slice(1,commands.length))
                   .then(result => {
@@ -52,8 +52,15 @@ function App() {
                     commandOutput.innerHTML = result;
                     document.getElementById("inactiveOutput").appendChild(inactiveLine)
                     document.getElementById("inactiveOutput").appendChild(commandOutput)
+                    let loadingDiv = document.getElementById("animation")
+                    document.getElementById("output").removeChild(loadingDiv)
                     setCommand("")
                   })
+                  let loadingDiv = document.createElement("div");
+                  loadingDiv.setAttribute("id","animation");
+                  loadingDiv.innerHTML = "<i class=\"fas fa-spinner\"></i>"
+                  console.log(loadingDiv)
+                  document.getElementById("output").appendChild(loadingDiv)
                 }
               }
             }/>
@@ -61,6 +68,7 @@ function App() {
         </div>
       </div>
       <div className="Fotter" style={constraintDown}>
+        SABT: Super Awesome Browser Terminal!
       </div>
     </div>
   );
@@ -78,8 +86,8 @@ async function getResult(command,args){
         rejectUnauthorized: false
       })
     });
-    var data
-    await instance.get(args)
+    let data
+    await instance.get("https://alexcolectionapi.netlify.com/.netlify/functions/getUrl/"+args)
     .then(body=>{
       try{
         data = "<code>"+body.data.replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</code>";
@@ -100,13 +108,13 @@ async function getResult(command,args){
         rejectUnauthorized: false
       })
     });
-    var data
+    let data
     await instance.get("https://api.ipify.org/")
     .then(async body=>{
-        data = "IPV4: "+body.data
+        data = "ipv4: "+body.data+"<br>"
         await instance.get("https://api6.ipify.org/")
         .then(body=>{
-            data = data + "IPV6: "+body.data
+            data = data + "ipv6: "+body.data
             console.log(data)
         })
     })
@@ -114,6 +122,12 @@ async function getResult(command,args){
       data = err;
     });
     return data;
+  }
+  else if(command.includes("calc(") && command.substr(command.length-1)===")" && (args===null || args===undefined || args==="" || args.length===0)){
+    let result = (command.substr(5));
+    result = result.substr(0,result.length-1)
+    result = result.replace(/\^/g,'**');
+    return eval(result)
   }
   else{
     return "Command not found";
