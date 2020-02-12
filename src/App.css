@@ -45,12 +45,6 @@
   display: flex;
   align-items: center;
   overflow: auto;
-  border-bottom: white;
-  border-left: transparent;
-  border-top: transparent;
-  border-right: transparent;
-  border-width: 0.1px;
-  border-style: solid;
 }
 
 .commandInputText,#output p{
