@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+
 const axios = require('axios');
 const https = require('https');
 
@@ -44,7 +45,7 @@ function App() {
                     <p>SABT >>\
                     <spam class=\"commandInputText\">"+command+"</spam></p>";
                   let commands = command.split(" ")
-                  getResult(commands[0],commands[1,commands.length-1])
+                  getResult(commands[0],commands.slice(1,commands.length))
                   .then(result => {
                     let commandOutput = document.createElement("span");
                     commandOutput.setAttribute("class","commandOutput");
@@ -66,7 +67,8 @@ function App() {
 }
 
 async function getResult(command,args){
-  if(command==="whoami" && (args===null || args===undefined || args==="") ){
+  console.log(args)
+  if(command==="whoami" && (args===null || args===undefined || args==="" || args.length===0) ){
     return "SABT: Super awesome browser terminal!";
   }
   else if(command==="wget" && args!==undefined){
@@ -79,7 +81,34 @@ async function getResult(command,args){
     var data
     await instance.get(args)
     .then(body=>{
-      data = "<code>"+body.data.replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</code>";
+      try{
+        data = "<code>"+body.data.replace(/</g,"&lt;").replace(/>/g,"&gt;")+"</code>";
+      }
+      catch{
+        data = JSON.stringify(body.data)
+      }
+    })
+    .catch(err=>{
+      data = err;
+    });
+    return data;
+  }
+  else if(command==="myip" && (args===null || args===undefined || args==="" || args.length===0)){
+    process.env["NODE_TLS_REJECT_UNAUTHORIZED"] = 0;
+    const instance = await axios.create({
+      httpsAgent: new https.Agent({  
+        rejectUnauthorized: false
+      })
+    });
+    var data
+    await instance.get("https://api.ipify.org/")
+    .then(async body=>{
+        data = "IPV4: "+body.data
+        await instance.get("https://api6.ipify.org/")
+        .then(body=>{
+            data = data + "IPV6: "+body.data
+            console.log(data)
+        })
     })
     .catch(err=>{
       data = err;
