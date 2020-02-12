@@ -31,7 +31,7 @@ function App() {
 
           <div id="activeLine">
             <p>
-              SABT >>
+              SABT >_
             </p>
             
             <input placeholder="Enter a command here" className="commandInput" spellcheck="false" value={command} onChange={
@@ -43,7 +43,7 @@ function App() {
                 if (e.key === 'Enter') {
                   let inactiveLine = document.createElement("div");
                   inactiveLine.setAttribute("class","inactiveLine");
-                  inactiveLine.innerHTML="<p>SABT >> <spam class=\"commandInputText\">"+command+"</spam></p>";
+                  inactiveLine.innerHTML="<p>SABT >_ <spam class=\"commandInputText\">"+command+"</spam></p>";
                   let commands = command.split(" ")
                   getResult(commands[0],commands.slice(1,commands.length))
                   .then(result => {
