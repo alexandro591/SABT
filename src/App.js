@@ -129,8 +129,11 @@ async function getResult(command,args){
     result = result.replace(/\^/g,'**');
     return eval(result)
   }
+  else if(command==="help" && (args===null || args===undefined || args==="" || args.length===0)){
+    return "Here you got all the commands with some examples:<br><br>* help<br>* whoami<br>* wget https://wwww.example.com<br>* myip<br>* calc(1+3+4+5/3+54^(1/2))"
+  }
   else{
-    return "Command not found";
+    return "Command not found, here are some examples:<br><br>* help<br>* whoami<br>* wget https://wwww.example.com<br>* myip<br>* calc(1+3+4+5/3+54^(1/2))";
   }
 }
 
